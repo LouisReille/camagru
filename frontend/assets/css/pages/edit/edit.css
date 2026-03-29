@@ -1,0 +1,449 @@
+
+
+.edit-main {
+  padding: 20px;
+  padding-top: 90px;
+  min-height: calc(100vh - 90px);
+}
+
+.edit-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+
+.edit-container.has-stickers {
+  grid-template-columns: 1.2fr 1fr;
+}
+
+.edit-main-section {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(255, 107, 157, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(255, 107, 157, 0.1);
+  min-height: 600px; 
+  display: flex;
+  flex-direction: column;
+  position: relative; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 0; 
+}
+
+
+.edit-main-section #backToImagesBtn[style*="display: block"] {
+  align-self: flex-start; 
+  margin-bottom: 20px;
+}
+
+
+.edit-main-section #backToImagesBtn[style*="display: none"],
+.edit-main-section #backToImagesBtn:not([style*="display: block"]) {
+  display: none !important;
+  margin: 0;
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+
+
+
+#captionContainer {
+  margin: 15px 0;
+}
+
+#captionContainer label {
+  display: block;
+  margin-bottom: 5px;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+#captionContainer textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(255, 107, 157, 0.2);
+  background: rgba(30, 41, 59, 0.8);
+  color: #e2e8f0;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+#captionContainer textarea:focus {
+  outline: none;
+  border-color: rgba(255, 107, 157, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+}
+
+#captionContainer textarea::placeholder {
+  color: #94a3b8;
+}
+
+.caption-counter {
+  text-align: right;
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #94a3b8;
+}
+
+
+#mergeButtons {
+  display: none; 
+  gap: 8px;
+  margin-top: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+#mergeButtons[style*="display: flex"],
+#mergeButtons[style*="display: block"] {
+  display: flex !important; 
+}
+
+
+#imagePreviewContainer {
+  text-align: center;
+}
+
+#imagePreviewContainer h2 {
+  color: #e2e8f0;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+#imagePreviewContainer .preview-wrapper {
+  margin: 0 auto;
+  max-width: 400px;
+  min-height: 500px; 
+  position: relative; 
+}
+
+#imagePreviewContainer .preview-wrapper img {
+  position: relative;
+  z-index: 1; 
+}
+
+#previewCaptionContainer {
+  margin: 15px 0;
+}
+
+#previewCaptionContainer label {
+  display: block;
+  margin-bottom: 5px;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+#previewCaptionContainer textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(255, 107, 157, 0.2);
+  background: rgba(30, 41, 59, 0.8);
+  color: #e2e8f0;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+#previewCaptionContainer textarea:focus {
+  outline: none;
+  border-color: rgba(255, 107, 157, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+}
+
+#previewCaptionContainer textarea::placeholder {
+  color: #94a3b8;
+}
+
+
+@media (max-width: 1024px) {
+  .edit-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .edit-main {
+    padding: 10px;
+    padding-top: 70px;
+  }
+  
+  .edit-container {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .edit-container.has-stickers {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .edit-main-section {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  
+  .capture-preview .preview-wrapper,
+  .preview-wrapper {
+    max-width: 100% !important;
+    width: 100%;
+    min-height: auto !important;
+    aspect-ratio: 4 / 5;
+  }
+  
+  .capture-preview .preview-wrapper img,
+  .preview-wrapper img {
+    max-width: 100%;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+  }
+  
+  #webcamVideo {
+    max-width: 100%;
+    max-height: 70vh;
+  }
+  
+  
+  .sticker-section {
+    width: 100%;
+    max-width: 100%;
+    position: static !important;
+    max-height: none !important;
+    height: auto;
+    padding: 10px !important;
+    margin-top: 10px;
+    order: 2; 
+  }
+  
+  .sticker-section h3 {
+    font-size: 0.9em !important;
+    margin-bottom: 8px !important;
+    text-align: center;
+  }
+  
+  
+  .sticker-tabs {
+    margin-bottom: 8px !important;
+    justify-content: center;
+  }
+  
+  .sticker-tab {
+    padding: 6px 12px !important;
+    font-size: 0.85em !important;
+  }
+  
+  
+  .sticker-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 10px;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  
+  .sticker-grid::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .sticker-grid::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+  
+  .sticker-item {
+    flex: 0 0 auto !important;
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+    max-width: 80px !important;
+    max-height: 80px !important;
+    aspect-ratio: 1;
+  }
+  
+  .sticker-item img {
+    padding: 8px !important;
+  }
+  
+  
+  .applied-stickers-container {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+  }
+  
+  .applied-stickers-title {
+    font-size: 0.85em !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .applied-stickers-list {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 8px;
+    max-height: none !important;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  
+  .applied-stickers-list::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .applied-stickers-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+  
+  .applied-sticker-item {
+    flex: 0 0 auto !important;
+    min-width: 120px;
+    max-width: 120px;
+  }
+  
+  .applied-sticker-item-icon {
+    width: 35px !important;
+    height: 35px !important;
+  }
+  
+  
+  .webcam-container,
+  .upload-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .webcam-controls,
+  .preview-actions {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  #mergeButtons {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap !important;
+    gap: 6px;
+    
+  }
+  
+  #mergeButtons[style*="display: flex"],
+  #mergeButtons[style*="display: block"] {
+    display: flex !important;
+  }
+  
+  
+  .edit-main-section .source-buttons[style*="display: flex"] ~ #mergeButtons,
+  .edit-main-section .source-buttons:not([style*="display: none"]) ~ #mergeButtons {
+    display: none !important;
+  }
+  
+  #mergeButtons button {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.85em;
+    padding: 10px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    width: auto !important;
+  }
+  
+  
+  #mergeButtons button[style*="display: none"] {
+    display: none !important;
+  }
+  
+  
+  #mergeButtons button[style*="display: inline-block"],
+  #mergeButtons button[style*="display: block"],
+  #mergeButtons button[style*="display: flex"] {
+    display: inline-block !important;
+  }
+  
+  #captionContainer {
+    width: 100%;
+  }
+  
+  
+  .edit-main-section {
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+  
+  .edit-main-section #backToImagesBtn[style*="display: none"] {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  .source-buttons {
+    flex-direction: column;
+    gap: 15px;
+    margin: 0 auto; 
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .source-buttons button.source-btn,
+  .source-buttons .source-btn-wrapper {
+    width: 100%;
+    min-width: 200px;
+    max-width: 300px;
+  }
+  
+  .source-tabs {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  
+  
+  .edit-main-section #mergeButtons {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+  
+  
+  .edit-main-section:not(:has(#webcamSection[style*="display: block"])):not(:has(#uploadSection[style*="display: block"])) #mergeButtons {
+    display: none !important;
+  }
+}

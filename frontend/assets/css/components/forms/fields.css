@@ -1,0 +1,77 @@
+
+
+.popup-right form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.popup-right label {
+  font-weight: bold;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.popup-right input {
+  padding: 12px;
+  border: 1px solid rgba(255, 107, 157, 0.3);
+  border-radius: 4px;
+  font-size: 1em;
+  margin-bottom: 0;
+  background: rgba(30, 41, 59, 0.6);
+  color: #e2e8f0;
+}
+
+.popup-right input::placeholder {
+  color: #94a3b8;
+}
+
+.popup-right .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.popup-right .form-group label {
+  margin-bottom: 8px;
+}
+
+.popup-right .form-group input {
+  margin-bottom: 0;
+}
+
+.form-group-compact {
+  margin-bottom: 8px;
+}
+
+.form-group-compact label {
+  margin-bottom: 4px;
+}
+
+
+.popup-section .auth-form {
+  gap: 0 !important;
+}
+
+.popup-section .auth-form .form-group-compact {
+  margin-bottom: 16px;
+}
+
+.preference-input {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 107, 157, 0.3);
+  border-radius: 6px;
+  font-size: 0.95em;
+  width: 100%;
+  transition: all 0.2s;
+  background: rgba(30, 41, 59, 0.6);
+  color: #e2e8f0;
+}
+
+.preference-input:focus {
+  outline: none;
+  border-color: #FF6B9D;
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
+  background: rgba(30, 41, 59, 0.8);
+}
+

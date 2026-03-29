@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Image - Camagru</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="/pages/index.html" onclick="if(window.location.pathname === '/pages/index.html' || window.location.pathname.endsWith('/index.html')) { event.preventDefault(); return false; }" style="color: inherit; text-decoration: none;">Camagru</a></h1>
+        <div class="header-actions">
+            <button id="logoutBtn" class="logout-btn" onclick="handleLogout()" style="display: none;">Logout</button>
+            <button id="userMenuIcon">C</button>
+        </div>
+    </header>
+    <script>(function() {
+    try {
+        const cachedUser = localStorage.getItem("camagru_user");
+        if (cachedUser) {
+            const user = JSON.parse(cachedUser);
+            const icon = document.getElementById("userMenuIcon");
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (icon && user.username) {
+                icon.textContent = user.username.charAt(0).toUpperCase();
+                icon.classList.add("logged-in");
+            }
+            if (logoutBtn) {
+                logoutBtn.style.display = "block";
+            }
+        }
+    } catch (e) {}
+})();</script>
+
+    <main class="edit-main">
+        <div class="edit-container">
+            
+            <div class="edit-main-section" id="createSection" style="display: none;">
+                
+                <button id="backToImagesBtn" class="btn-secondary" onclick="showImagesView()" style="margin-bottom: 15px; display: none;">
+                    ← Back to Your Images
+                </button>
+                
+                
+                <div class="source-buttons">
+                    <button id="startWebcamBtn" class="btn-primary source-btn" onclick="startWebcam()">Start Camera</button>
+                    <label class="file-label source-btn-wrapper">
+                        <input type="file" id="imageFile" accept="image/*,image/heic,image/heif" style="display: none;" onchange="handleFileSelect(event)">
+                        <span class="btn-primary source-btn">Choose Image</span>
+                    </label>
+                </div>
+
+                
+                <div id="webcamSection" class="source-section" style="display: none;">
+                    <div class="webcam-container">
+                        <div class="webcam-video-wrapper">
+                            <video id="webcamVideo" autoplay playsinline style="display: none;"></video>
+                            <div id="webcamStickerContainer" class="sticker-container"></div>
+                        </div>
+                        <canvas id="webcamCanvas" style="display: none;"></canvas>
+                        
+                        <div id="capturePreview" class="preview" style="display: none;">
+                            <div class="preview-wrapper">
+                                <img id="capturePreviewImg" src="" alt="Captured image">
+                                <div id="captureStickerContainer" class="sticker-container"></div>
+                            </div>
+                            <div class="preview-actions">
+                                <button class="btn-secondary" onclick="retakePhoto()">Retake</button>
+                                <button class="btn-primary" onclick="proceedToSticker()">Use This Photo</button>
+                            </div>
+                        </div>
+                        
+                        <div id="webcamError" class="error-message" style="display: none;"></div>
+                        <div class="webcam-controls">
+                            <button id="stopWebcamBtn" class="btn-secondary" onclick="stopWebcam()" style="display: none;">Stop</button>
+                            <button id="captureBtn" class="btn-primary" onclick="capturePhoto()" style="display: none;">Capture</button>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="uploadSection" class="source-section" style="display: none;">
+                    <div class="upload-container">
+                        <div id="uploadPreview" class="preview" style="display: none;">
+                            <div class="preview-wrapper">
+                                <img id="uploadPreviewImg" src="" alt="Preview">
+                                <div id="uploadStickerContainer" class="sticker-container"></div>
+                            </div>
+                            <div class="preview-actions">
+                                <button class="btn-secondary" onclick="clearUpload()">Change</button>
+                                <button class="btn-primary" onclick="proceedToStickerFromUpload()">Use This Image</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="captionContainer" style="display: none;">
+                    <label for="imageCaption">Caption (optional)</label>
+                    <textarea id="imageCaption" placeholder="Add a caption..." maxlength="500" rows="3"></textarea>
+                    <div class="caption-counter"><span id="captionCharCount">0</span>/500</div>
+                </div>
+                
+                <div id="mergeButtons" style="display: none;">
+                    <button id="mergeBtn" class="btn-secondary" onclick="mergeAndUpload()">Save</button>
+                    <button id="continueBtn" class="btn-primary" onclick="showCaptionSection()">Continue</button>
+                    <button id="postBtn" class="btn-primary" onclick="saveAndPost()" style="display: none;">Post</button>
+                    <button id="cancelBtn" class="btn-secondary" onclick="showImagesView()">Cancel</button>
+                </div>
+
+                
+                <div id="imagePreviewContainer" style="display: none;">
+                    <button id="previewBackBtn" class="btn-secondary" onclick="backToImagesList()" style="margin-bottom: 15px; display: none;">← Back</button>
+                    <h2>Image Preview</h2>
+                    <div class="preview-wrapper">
+                        <img id="previewImage" src="" alt="Preview">
+                        <div id="previewStickerContainer" class="sticker-container"></div>
+                    </div>
+                    <div class="preview-actions">
+                        <button id="previewPostBtn" class="btn-primary" onclick="postPreviewImage()">Post</button>
+                        <button id="previewEditBtn" class="btn-secondary" onclick="editPreviewImage()">Edit</button>
+                        <button id="previewDeleteBtn" class="btn-secondary" onclick="deletePreviewImage()">Delete</button>
+                    </div>
+                    <div id="previewCaptionContainer" style="display: none;">
+                        <label for="previewImageCaption">Caption</label>
+                        <textarea id="previewImageCaption" maxlength="500" rows="3"></textarea>
+                        <div class="caption-counter"><span id="previewCaptionCharCount">0</span>/500</div>
+                    </div>
+                    <div id="previewEditActions" style="display: none;">
+                        <button id="previewSaveBtn" onclick="savePreviewEdit()">Save</button>
+                        <button id="previewSavePostBtn" onclick="saveAndPostPreviewEdit()">Save & Post</button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div id="stickerSection" class="sticker-section" style="display: none;">
+                
+                <div id="appliedStickersContainer" class="applied-stickers-container" style="display: none;">
+                    <h4 class="applied-stickers-title">Applied Stickers & Filters</h4>
+                    <div id="appliedStickersList" class="applied-stickers-list"></div>
+                </div>
+                
+                <div class="sticker-tabs">
+                    <button class="sticker-tab active" onclick="switchStickerTab('stickers')">Stickers</button>
+                    <button class="sticker-tab" onclick="switchStickerTab('filters')">Filters</button>
+                    <button class="sticker-tab" onclick="switchStickerTab('frames')">Frames</button>
+                </div>
+                <div id="stickersTab" class="sticker-tab-content active">
+                    <div class="sticker-grid" id="stickerGrid"></div>
+                </div>
+                <div id="filtersTab" class="sticker-tab-content">
+                    <div class="sticker-grid" id="filterGrid"></div>
+                </div>
+                <div id="framesTab" class="sticker-tab-content">
+                    <div class="sticker-grid" id="frameGrid"></div>
+                </div>
+            </div>
+
+            
+            <div class="edit-sidebar" id="imagesSection">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0;">Your Images</h3>
+                    <button class="plus-button" onclick="showCreateView()" title="Create New Image">+</button>
+                </div>
+                <div class="filter-buttons">
+                    <button id="filterPosted" class="filter-btn active" onclick="filterImages('posted')">Posted</button>
+                    <button id="filterDrafts" class="filter-btn" onclick="filterImages('drafts')">Drafts</button>
+                </div>
+                <div id="userImagesGrid" class="user-images-grid">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Camagru</p>
+    </footer>
+
+    
+    <div id="popupBackdrop" class="popup-backdrop" onclick="closePopup()"></div>
+
+    
+    <div id="rightPopup" class="popup-right"></div>
+
+    
+    <script src="/assets/js/config.js" type="text/javascript"></script>
+    
+    
+    <script src="/assets/js/common/template-loader.js" type="text/javascript"></script>
+    
+    
+    <script src="/assets/js/common/session-refresh.js" type="text/javascript"></script>
+    
+    
+    <script src="/assets/js/common/user/state.js" type="text/javascript"></script>
+    <script src="/assets/js/common/user/api.js" type="text/javascript"></script>
+    <script src="/assets/js/common/utils/helpers.js" type="text/javascript"></script>
+    <script src="/assets/js/common/validation/validators.js" type="text/javascript"></script>
+    <script src="/assets/js/common/ui/popup.js" type="text/javascript"></script>
+    
+    
+    <script src="/assets/js/common/auth/token.js" type="text/javascript"></script>
+    <script src="/assets/js/auth/auth.js" type="text/javascript"></script>
+    <script src="/assets/js/common/auth/forms.js" type="text/javascript"></script>
+    
+    
+    <script src="/assets/js/common/user/settings.js" type="text/javascript"></script>
+    <script src="/assets/js/common/user/profile.js" type="text/javascript"></script>
+    <script src="/assets/js/common/user/actions.js" type="text/javascript"></script>
+    
+    
+    <script src="/assets/js/common/messages.js" type="text/javascript"></script>
+    <script src="/assets/js/common/menu.js" type="text/javascript"></script>
+    
+    
+    <script src="/assets/js/common/menu.js" type="text/javascript"></script>
+    
+    <script src="/assets/js/edit/state-manager.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/view-manager.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/sticker-position-calculator.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/image-crop-helper.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/image-edit-helper.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/webcam-manager.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/user-images-manager.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/image-preview-manager.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/image-crop-helper.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/file-upload-manager.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/image-action-manager.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/sticker-system.js" type="text/javascript"></script>
+    <script src="/assets/js/edit/edit.js" type="text/javascript"></script>
+    <script type="text/javascript">window.addEventListener("load", async () => {
+    const loggedIn = typeof isLoggedIn === "function" ? await isLoggedIn() : false;
+    if (!loggedIn) {
+        window.location.href = "/pages/index.html";
+        return;
+    }
+    await initHeaderMenu();
+    const createSection = document.getElementById("createSection");
+    const imagesSection = document.getElementById("imagesSection");
+    const mergeButtons = document.getElementById("mergeButtons");
+    const capturePreview = document.getElementById("capturePreview");
+    const uploadPreview = document.getElementById("uploadPreview");
+    const stickerSection = document.getElementById("stickerSection");
+    const createSectionInline = createSection ? createSection.style.display : "";
+    const createSectionStyle = createSection ? window.getComputedStyle(createSection) : null;
+    const isCreating = createSectionInline && createSectionInline !== "none" || createSectionStyle && createSectionStyle.display !== "none";
+    const mergeButtonsInline = mergeButtons ? mergeButtons.style.display : "";
+    const mergeButtonsStyle = mergeButtons ? window.getComputedStyle(mergeButtons) : null;
+    const hasMergeButtons = mergeButtonsInline && mergeButtonsInline !== "none" || mergeButtonsStyle && mergeButtonsStyle.display !== "none";
+    const capturePreviewInline = capturePreview ? capturePreview.style.display : "";
+    const uploadPreviewInline = uploadPreview ? uploadPreview.style.display : "";
+    const capturePreviewStyle = capturePreview ? window.getComputedStyle(capturePreview) : null;
+    const uploadPreviewStyle = uploadPreview ? window.getComputedStyle(uploadPreview) : null;
+    const hasPreview = capturePreviewInline && capturePreviewInline !== "none" || uploadPreviewInline && uploadPreviewInline !== "none" || capturePreviewStyle && capturePreviewStyle.display !== "none" || uploadPreviewStyle && uploadPreviewStyle.display !== "none";
+    const stickerSectionInline = stickerSection ? stickerSection.style.display : "";
+    const stickerSectionStyle = stickerSection ? window.getComputedStyle(stickerSection) : null;
+    const hasStickers = stickerSectionInline && stickerSectionInline !== "none" || stickerSectionStyle && stickerSectionStyle.display !== "none";
+    const isEditing = typeof window.editingImageId !== "undefined" && window.editingImageId !== null;
+    if (isCreating || hasMergeButtons || hasPreview || hasStickers || isEditing) {
+        if (mergeButtons) {
+            mergeButtons.style.display = "none";
+        }
+        if (createSection) {
+            createSection.style.display = "none";
+        }
+        if (capturePreview) {
+            capturePreview.style.display = "none";
+        }
+        if (uploadPreview) {
+            uploadPreview.style.display = "none";
+        }
+        if (stickerSection) {
+            stickerSection.style.display = "none";
+        }
+        const captionContainer = document.getElementById("captionContainer");
+        if (captionContainer) {
+            captionContainer.style.display = "none";
+        }
+        const backBtn = document.getElementById("backToImagesBtn");
+        if (backBtn) {
+            backBtn.style.display = "none";
+        }
+        window.editingImageId = undefined;
+        window.editingImageFilename = undefined;
+        if (typeof resetEditForm === "function") {
+            resetEditForm();
+        }
+        if (createSection) {
+            createSection.style.display = "none";
+        }
+        if (imagesSection) {
+            imagesSection.style.display = "block";
+        }
+        if (mergeButtons) {
+            mergeButtons.style.display = "none";
+        }
+        setTimeout(() => {
+            if (createSection && window.getComputedStyle(createSection).display !== "none") {
+                createSection.style.display = "none";
+            }
+            if (mergeButtons && window.getComputedStyle(mergeButtons).display !== "none") {
+                mergeButtons.style.display = "none";
+            }
+            if (imagesSection && window.getComputedStyle(imagesSection).display === "none") {
+                imagesSection.style.display = "block";
+            }
+        }, 100);
+    }
+    let attempts = 0;
+    const maxAttempts = 10;
+    const checkLoadUserImages = async () => {
+        if (typeof loadUserImages === "function") {
+            await loadUserImages();
+        } else if (attempts < maxAttempts) {
+            attempts++;
+            setTimeout(checkLoadUserImages, 100);
+        }
+    };
+    await checkLoadUserImages();
+    const finalCreateSection = document.getElementById("createSection");
+    const finalMergeButtons = document.getElementById("mergeButtons");
+    const finalImagesSection = document.getElementById("imagesSection");
+    if (finalCreateSection && window.getComputedStyle(finalCreateSection).display === "none") {
+        if (finalMergeButtons && window.getComputedStyle(finalMergeButtons).display !== "none") {
+            finalMergeButtons.style.display = "none";
+        }
+    }
+    if (finalCreateSection && window.getComputedStyle(finalCreateSection).display === "none") {
+        if (finalImagesSection && window.getComputedStyle(finalImagesSection).display === "none") {
+            finalImagesSection.style.display = "block";
+        }
+    }
+    const captionInput = document.getElementById("imageCaption");
+    const previewCaptionInput = document.getElementById("previewImageCaption");
+    const captionCharCount = document.getElementById("captionCharCount");
+    const previewCaptionCharCount = document.getElementById("previewCaptionCharCount");
+    function updateCharCount(input, counter) {
+        if (input && counter) {
+            counter.textContent = input.value.length;
+        }
+    }
+    if (captionInput && captionCharCount) {
+        captionInput.addEventListener("input", () => updateCharCount(captionInput, captionCharCount));
+    }
+    if (previewCaptionInput && previewCaptionCharCount) {
+        previewCaptionInput.addEventListener("input", () => updateCharCount(previewCaptionInput, previewCaptionCharCount));
+    }
+});
+
+function showCreateView() {
+    document.getElementById("createSection").style.display = "block";
+    document.getElementById("imagesSection").style.display = "none";
+    const backBtn = document.getElementById("backToImagesBtn");
+    if (backBtn && !window.editingImageId) {
+        backBtn.style.display = "block";
+    }
+    const mergeButtons = document.getElementById("mergeButtons");
+    if (mergeButtons) {
+        mergeButtons.style.display = "none";
+    }
+    if (typeof resetEditForm === "function") {
+        resetEditForm();
+    }
+}
+
+function showImagesView() {
+    document.getElementById("createSection").style.display = "none";
+    document.getElementById("imagesSection").style.display = "block";
+    if (typeof resetEditForm === "function") {
+        resetEditForm();
+    }
+}
+
+window.showCreateView = showCreateView;
+
+window.showImagesView = showImagesView;</script>
+</body>
+</html>

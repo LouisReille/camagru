@@ -1,0 +1,11 @@
+<div class="gallery-empty-state">
+    <div class="empty-icon">📷</div>
+    <h3>No images yet</h3>
+    <p>Be the first to share a picture! Create your masterpiece and share it with the community.</p>
+    {{#if loggedIn}}
+    <a href="/pages/edit.html" class="btn-primary">Create Image</a>
+    {{else}}
+    <button onclick="openLoginOrRegister()" class="btn-primary">Login or Register to Share</button>
+    {{/if}}
+</div>
+

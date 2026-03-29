@@ -1,0 +1,377 @@
+
+
+.sticker-section {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(255, 107, 157, 0.15);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(255, 107, 157, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: 90px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+
+.sticker-section h3 {
+  color: #e2e8f0;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.sticker-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 107, 157, 0.15);
+}
+
+.sticker-tab {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #94a3b8;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.sticker-tab:hover {
+  color: #e2e8f0;
+}
+
+.sticker-tab.active {
+  color: #FF6B9D;
+  border-bottom-color: #FF6B9D;
+  font-weight: 600;
+}
+
+.sticker-tab-content {
+  display: none;
+}
+
+.sticker-tab-content.active {
+  display: block;
+}
+
+.sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .sticker-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+  }
+}
+
+.sticker-item {
+  aspect-ratio: 1;
+  border: 2px solid rgba(255, 107, 157, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 41, 59, 0.8);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.sticker-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+.sticker-item:hover {
+  border-color: rgba(255, 107, 157, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+}
+
+.sticker-item.selected {
+  border-color: #FF6B9D;
+  background: rgba(255, 107, 157, 0.15);
+  box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.3);
+}
+
+
+.sticker-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100; 
+  overflow: visible; 
+}
+
+.draggable-sticker {
+  position: absolute;
+  cursor: grab;
+  pointer-events: all;
+  z-index: 101; 
+}
+
+.draggable-sticker:active {
+  cursor: grabbing;
+}
+
+
+.draggable-sticker[data-type="filter"] {
+  cursor: default;
+  pointer-events: none;
+  width: 100% !important;
+  height: 100% !important;
+  left: 0 !important;
+  top: 0 !important;
+  transform: none !important;
+}
+
+.draggable-sticker[data-type="filter"]:active {
+  cursor: default;
+}
+
+
+.draggable-sticker[data-type="frame"] {
+  cursor: default;
+  pointer-events: none;
+  transform: none;
+  
+}
+
+.draggable-sticker[data-type="frame"]:active {
+  cursor: default;
+}
+
+.draggable-sticker img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 1;
+}
+
+
+.draggable-sticker[data-type="filter"] img {
+  object-fit: cover;
+}
+
+
+.draggable-sticker[data-type="frame"] {
+  overflow: visible; 
+  box-sizing: border-box;
+}
+
+.draggable-sticker[data-type="frame"] img {
+  object-fit: contain; 
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.sticker-delete {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #dc2626; 
+  color: white;
+  border: 2px solid white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 102; 
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+  line-height: 1;
+  padding: 0;
+}
+
+.sticker-delete:hover {
+  background: #b91c1c; 
+  transform: scale(1.15);
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.5);
+}
+
+.sticker-resize-handle {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #00D4FF 0%, #00B8D4 100%);
+  border: 2px solid rgba(30, 41, 59, 0.9);
+  border-radius: 50%;
+  cursor: nwse-resize;
+  z-index: 102; 
+  box-shadow: 0 2px 6px rgba(0, 212, 255, 0.4);
+  transition: all 0.2s;
+}
+
+.sticker-resize-handle:hover {
+  background: linear-gradient(135deg, #00B8D4 0%, #0097C7 100%);
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 212, 255, 0.5);
+}
+
+
+.applied-stickers-container {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 107, 157, 0.15);
+}
+
+.applied-stickers-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.applied-stickers-title::before {
+  content: '📋';
+  font-size: 16px;
+}
+
+.applied-stickers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.applied-sticker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 107, 157, 0.2);
+  transition: all 0.2s;
+}
+
+.applied-sticker-item:hover {
+  background: rgba(255, 107, 157, 0.1);
+  border-color: rgba(255, 107, 157, 0.4);
+}
+
+.applied-sticker-item.removed {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.applied-sticker-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(30, 41, 59, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 107, 157, 0.2);
+}
+
+.applied-sticker-item-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+}
+
+.applied-sticker-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.applied-sticker-item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e2e8f0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.applied-sticker-item-type {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 2px 0 0 0;
+  text-transform: capitalize;
+}
+
+.applied-sticker-item-remove {
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E9B 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(255, 107, 157, 0.3);
+}
+
+.applied-sticker-item-remove:hover {
+  background: linear-gradient(135deg, #FF8E9B 0%, #FF6B9D 100%);
+  box-shadow: 0 4px 8px rgba(255, 107, 157, 0.4);
+  transform: translateY(-1px);
+}
+
+.applied-sticker-item-remove:active {
+  transform: translateY(0);
+}
+
+.applied-sticker-item-restore {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.applied-sticker-item-restore:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
+}
+
+.applied-sticker-item-restore:active {
+  transform: translateY(0);
+}

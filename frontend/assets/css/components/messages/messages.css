@@ -1,0 +1,79 @@
+
+
+.inline-message {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+
+.inline-message.show {
+  display: block;
+}
+
+.inline-message.success {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.inline-message.error {
+  background-color: rgba(255, 107, 157, 0.2);
+  color: #FF6B9D;
+  border: 1px solid rgba(255, 107, 157, 0.4);
+}
+
+.inline-message.info {
+  background-color: rgba(0, 212, 255, 0.2);
+  color: #00D4FF;
+  border: 1px solid rgba(0, 212, 255, 0.4);
+}
+
+.inline-message.warning {
+  background-color: rgba(255, 142, 155, 0.2);
+  color: #FF8E9B;
+  border: 1px solid rgba(255, 142, 155, 0.4);
+}
+
+.inline-message.confirmation {
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 0.85em;
+}
+
+.inline-message.confirmation button {
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 0.85em;
+  margin-left: 0;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.inline-message.confirmation button:first-of-type {
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF4757 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(255, 107, 157, 0.3);
+}
+
+.inline-message.confirmation button:first-of-type:hover {
+  background: linear-gradient(135deg, #FF4757 0%, #FF6B9D 100%);
+  box-shadow: 0 4px 10px rgba(255, 107, 157, 0.4);
+}
+
+.inline-message.confirmation button:last-of-type {
+  background: linear-gradient(135deg, #00D4FF 0%, #00B8D4 100%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 212, 255, 0.3);
+}
+
+.inline-message.confirmation button:last-of-type:hover {
+  background: linear-gradient(135deg, #00B8D4 0%, #0097C7 100%);
+  box-shadow: 0 4px 10px rgba(0, 212, 255, 0.4);
+}
+

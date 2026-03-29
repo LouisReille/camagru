@@ -1,0 +1,664 @@
+
+
+/* #gallery: 5 → 4 → 3 → 2 → 1 as viewport narrows (avoids jumping 5→3 when devtools is open) */
+@media (max-width: 1536px) {
+  #gallery {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (max-width: 1200px) {
+  #gallery {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+}
+
+@media (max-width: 1024px) {
+  main {
+    max-width: 100%;
+    padding: 20px;
+  }
+  
+  .popup-right {
+    width: 30%;
+    min-width: 280px;
+  }
+
+  
+  .edit-container {
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+  
+  .edit-sidebar {
+    position: static;
+    max-height: none;
+  }
+  
+  .user-images-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+  
+  header {
+    height: 60px !important;
+    padding: 10px 0 !important;
+  }
+  
+  header h1 {
+    font-size: 1.3em;
+    margin-left: 15px;
+  }
+  
+  #userMenuIcon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1.1em;
+    margin-right: 15px !important;
+  }
+  
+  main {
+    padding: 15px;
+  }
+  
+  #gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .popup-right {
+    width: 85%;
+    min-width: 0;
+    max-width: 400px;
+  }
+  
+  .image-card {
+    border-radius: 6px;
+  }
+  
+  .image-card button {
+    padding: 10px 12px;
+    font-size: 0.9em;
+  }
+  
+  .pager {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .pager button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  .edit-main-section {
+    padding: 20px;
+  }
+  
+  
+  
+  .sticker-resize-handle {
+    width: 28px !important;
+    height: 28px !important;
+    bottom: -6px !important;
+    right: -6px !important;
+  }
+  
+  .sticker-delete {
+    width: 26px !important;
+    height: 26px !important;
+    top: -6px !important;
+    right: -6px !important;
+    font-size: 17px !important;
+  }
+  
+  .preview-stickers-container {
+    gap: 12px !important;
+  }
+  
+  .preview-area {
+    min-width: 0;
+    flex: 1;
+  }
+  
+  .capture-preview .preview-wrapper img:first-child,
+  .image-preview .preview-wrapper img:first-child {
+    max-width: 100% !important;
+    max-height: 250px !important;
+  }
+  
+  #webcamVideo {
+    max-width: 100% !important;
+    max-height: 250px !important;
+  }
+  
+  .user-images-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 60px;
+  }
+  
+  header {
+    height: 60px !important;
+    padding: 8px 0 !important;
+  }
+  
+  header h1 {
+    font-size: 1.2em;
+    margin-left: 12px;
+  }
+  
+  #userMenuIcon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1em;
+    margin-right: 12px !important;
+  }
+  
+  main {
+    padding: 12px;
+  }
+  
+  main h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+  }
+  
+  #gallery {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    justify-items: center; 
+  }
+  
+  main {
+    margin-top: 70px;
+    padding-top: 20px;
+  }
+  
+  
+  @media (max-width: 932px) and (orientation: landscape) {
+    #gallery {
+      margin-top: 80px !important; 
+    }
+  }
+  
+  .image-card {
+    width: 100% !important; 
+    max-width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .image-card img {
+    width: 100% !important;
+    aspect-ratio: 4 / 5 !important; 
+    height: auto !important; 
+  }
+  
+  
+  .image-card button:not(.actions-div button):not(.action-btn) {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 10px;
+    font-size: 0.9em;
+  }
+  
+  
+  .image-card .actions-div {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important; 
+    gap: 10px !important;
+  }
+  
+  .image-card .action-btn {
+    width: auto !important; 
+    flex: none !important; 
+    padding: 10px !important;
+    margin: 0 !important;
+    font-size: 0.9em !important;
+  }
+  
+  .image-card input {
+    width: calc(100% - 20px);
+    margin: 8px 10px;
+    padding: 10px;
+    font-size: 0.9em;
+  }
+  
+  .comments {
+    padding: 8px;
+    max-height: 150px;
+  }
+  
+  .comments p {
+    font-size: 0.9em;
+    padding: 8px;
+    margin: 4px 0;
+  }
+  
+  .pager {
+    gap: 8px;
+    margin-top: 20px;
+  }
+  
+  .pager button {
+    padding: 8px 14px;
+    font-size: 0.85em;
+    min-width: 44px;
+  }
+  
+  .pager span {
+    font-size: 0.9em;
+  }
+  
+  
+  .popup-right {
+    width: 100%;
+    max-width: 100%;
+    right: -100%;
+  }
+  
+  .popup-right.open {
+    right: 0;
+  }
+  
+  .popup-right h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    padding-right: 50px;
+  }
+  
+  .popup-right h3 {
+    padding-right: 50px;
+  }
+  
+  .popup-close-btn {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.8em;
+    background: #e0e0e0;
+  }
+  
+  .popup-right form {
+    gap: 15px;
+  }
+  
+  .popup-right input {
+    padding: 14px;
+    font-size: 16px;
+    min-height: 44px;
+  }
+  
+  .popup-right button[type="submit"] {
+    padding: 14px;
+    font-size: 1em;
+    min-height: 44px;
+  }
+  
+  .popup-right label {
+    font-size: 0.95em;
+  }
+  
+  .popup-right .link {
+    font-size: 0.9em;
+    padding: 8px 0;
+  }
+  
+  .popup-right p {
+    font-size: 0.9em;
+    margin-top: 12px;
+  }
+  
+  .field-message {
+    font-size: 0.8em;
+  }
+  
+  .field-message:empty {
+    display: none;
+  }
+  
+  .field-message .suggestion-btn {
+    padding: 4px 8px;
+    font-size: 0.8em;
+    margin: 2px;
+  }
+  
+  .inline-message {
+    padding: 12px;
+    font-size: 0.85em;
+  }
+  
+  .inline-message.confirmation button {
+    padding: 8px 12px;
+    font-size: 0.85em;
+    min-height: 36px;
+  }
+  
+  .popup-header {
+    padding: 25px 20px 15px;
+  }
+  
+  .popup-header h2 {
+    font-size: 1.3em;
+  }
+  
+  .popup-section {
+    padding: 15px 20px;
+  }
+  
+  .popup-action-card {
+    margin: 15px 20px;
+  }
+  
+  .action-card-link {
+    padding: 15px;
+  }
+  
+  .popup-right .account-section {
+    margin-bottom: 20px;
+  }
+  
+  .popup-right .account-section h3 {
+    font-size: 1.1em;
+    margin-bottom: 12px;
+  }
+  
+  .popup-right .account-section input {
+    padding: 12px;
+    font-size: 16px;
+    min-height: 44px;
+  }
+  
+  .popup-right .account-section button {
+    padding: 12px;
+    font-size: 0.95em;
+    min-height: 44px;
+  }
+  
+  .action-button {
+    padding: 12px 16px;
+    font-size: 0.9em;
+  }
+  
+  .popup-right input[type="password"],
+  .popup-right input[type="text"] {
+    padding-right: 80px !important;
+  }
+  
+  .popup-right label:has(input[type="checkbox"]) {
+    font-size: 0.85em;
+  }
+  
+  footer {
+    padding: 15px;
+    font-size: 0.9em;
+  }
+  
+  form {
+    gap: 15px;
+  }
+  
+  form label {
+    font-size: 0.95em;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  form input[type="file"] {
+    padding: 10px;
+    font-size: 0.9em;
+    min-height: 44px;
+  }
+  
+  form select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    min-height: 44px;
+    margin-bottom: 10px;
+  }
+  
+  form button {
+    width: 100%;
+    padding: 14px;
+    font-size: 1em;
+    min-height: 44px;
+  }
+
+  .source-tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  
+  
+  .sticker-message {
+    font-size: 0.75em !important;
+    margin-top: 5px !important;
+  }
+  
+  .sticker-resize-handle {
+    width: 32px !important;
+    height: 32px !important;
+    bottom: -8px !important;
+    right: -8px !important;
+  }
+  
+  .sticker-delete {
+    width: 28px !important;
+    height: 28px !important;
+    top: -8px !important;
+    right: -8px !important;
+    font-size: 18px !important;
+  }
+  
+  .preview-stickers-container {
+    gap: 10px !important;
+  }
+  
+  .preview-area {
+    min-width: 0;
+    flex: 1;
+  }
+  
+  .capture-preview .preview-wrapper img:first-child,
+  .image-preview .preview-wrapper img:first-child {
+    max-width: 100% !important;
+    max-height: 200px !important;
+  }
+  
+  #webcamVideo {
+    max-width: 100% !important;
+    max-height: 200px !important;
+  }
+  
+  .btn-capture, .btn-primary {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  
+  #mergeButtons .btn-primary,
+  #mergeButtons .btn-secondary {
+    width: auto;
+  }
+  
+  
+  
+  .edit-main-section {
+    padding: 15px;
+  }
+  
+  .edit-sidebar {
+    padding: 15px;
+  }
+  
+  .header-actions {
+    gap: 8px;
+    margin-right: 12px;
+  }
+  
+  .logout-btn {
+    padding: 6px 12px;
+    font-size: 0.85em;
+  }
+  
+  #userMenuIcon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1em;
+    margin-right: 0 !important;
+  }
+  
+  main {
+    margin-top: 70px;
+    padding-top: 15px;
+  }
+  
+  .image-card img {
+    height: 180px;
+  }
+}
+
+
+@media (max-width: 768px) and (orientation: landscape) {
+  body {
+    padding-top: 60px;
+  }
+  
+  header {
+    height: 60px !important;
+  }
+  
+  main {
+    padding: 12px;
+  }
+  
+  #gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .popup-right {
+    width: 50%;
+    max-width: 400px;
+  }
+  
+  .popup-right h2 {
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+  
+  .popup-right form {
+    gap: 12px;
+  }
+  
+  .popup-right input {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .popup-right button[type="submit"] {
+    padding: 10px;
+  }
+  
+  .popup-right input[type="password"],
+  .popup-right input[type="text"] {
+    padding-right: 75px;
+  }
+}
+
+
+@media (max-width: 360px) {
+  header h1 {
+    font-size: 1.1em;
+    margin-left: 10px;
+  }
+  
+  #userMenuIcon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.95em;
+    margin-right: 10px !important;
+  }
+  
+  main {
+    padding: 10px;
+  }
+  
+  main h2 {
+    font-size: 1.2em;
+  }
+  
+  .popup-right {
+    padding: 12px;
+  }
+  
+  .popup-right h2 {
+    font-size: 1.2em;
+  }
+  
+  .pager button {
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+}
+
+
+@media (hover: none) and (pointer: coarse) {
+  button,
+  .popup-right .link,
+  .field-message .suggestion-btn,
+  .pager button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  #userMenuIcon {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .image-card button {
+    min-height: 40px;
+  }
+  
+  input[type="checkbox"] {
+    min-width: 20px;
+    min-height: 20px;
+  }
+}
+
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .image-card {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  header {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+  }
+}
+

@@ -1,0 +1,90 @@
+<button class="popup-close-btn" onclick="closePopup()" aria-label="Close">×</button>
+
+<div class="popup-header">
+    <h2>{{username}}</h2>
+    {{#if joinDate}}
+    <div class="join-date">{{joinDate}}</div>
+    {{/if}}
+</div>
+
+{{#if showCreateImageCard}}
+<div class="popup-action-card">
+    <a href="/pages/edit.html" class="action-card-link">
+        <div class="action-card-icon">📷</div>
+        <div class="action-card-content">
+            <div class="action-card-title">Edit Images</div>
+            <div class="action-card-subtitle">Create, edit, or manage your images</div>
+        </div>
+        <div class="action-card-arrow">→</div>
+    </a>
+</div>
+{{/if}}
+
+<div class="popup-section">
+    <div class="section-header" onclick="showAccountPreferences()">
+        <h3>⚙️ Preferences</h3>
+        <span class="section-toggle" id="preferencesToggle">▼</span>
+    </div>
+    <div id="accountPreferences" class="account-preferences-content" style="display: none;">
+        <div class="preferences-section">
+            <h4>Email Notifications</h4>
+            <div class="notification-container">
+                <label class="notification-item">
+                    <input type="checkbox" id="emailNotificationsLikes" {{#if emailNotificationsLikes}}checked{{/if}} class="notification-checkbox">
+                    <span>Notifications for likes</span>
+                </label>
+                <div class="notification-divider"></div>
+                <label class="notification-item">
+                    <input type="checkbox" id="emailNotificationsComments" {{#if emailNotificationsComments}}checked{{/if}} class="notification-checkbox">
+                    <span>Notifications for comments</span>
+                </label>
+            </div>
+            <button id="savePreferencesBtn" class="save-preferences-btn" onclick="saveNotificationPreferences()" style="display: none;">
+                <span id="savePreferencesBtnText">Save Preferences</span>
+            </button>
+        </div>
+        
+        <div class="preferences-divider"></div>
+        
+        <div class="preferences-section">
+            <h4>Account Information</h4>
+            <div class="form-group-compact">
+                <label>Username</label>
+                <input type="text" id="editUsername" value="{{username}}" oninput="handleUsernameChange('{{username}}')" class="preference-input">
+                <div id="editUsernameMessage" class="field-message"></div>
+                <button id="updateUsernameBtn" class="update-field-btn" onclick="updateUsername('{{username}}')" style="display: none;">Update Username</button>
+            </div>
+            <div class="form-group-compact">
+                <label>Email</label>
+                <input type="email" id="editEmail" value="{{email}}" oninput="handleEmailChange('{{email}}')" class="preference-input">
+                <div id="editEmailMessage" class="field-message"></div>
+                <button id="updateEmailBtn" class="update-field-btn" onclick="updateEmail('{{email}}')" style="display: none;">Update Email</button>
+            </div>
+            <div class="form-group-compact">
+                <label>New Password</label>
+                <input type="password" id="editPassword" placeholder="Password" oninput="handlePasswordChange()" class="preference-input">
+                <label style="display: flex; align-items: center; cursor: pointer; font-size: 0.85em; color: #666; user-select: none; margin-top: 5px;">
+                    <input type="checkbox" id="showEditPassword" style="margin-right: 5px; cursor: pointer;" onchange="togglePasswordVisibility('editPassword')">
+                    Show password
+                </label>
+                <div id="editPasswordMessage" class="field-message"></div>
+                <button id="updatePasswordBtn" class="update-field-btn" onclick="updatePassword()" style="display: none;">Update Password</button>
+            </div>
+        </div>
+        
+        <div class="preferences-divider"></div>
+        
+        <div class="preferences-section">
+            <button class="action-button danger" id="deleteAccountBtn">
+                <span class="button-icon">🗑️</span>
+                <span>Delete Account</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="popup-section">
+    <button class="action-button primary" id="logoutBtnPopup" onclick="handleLogout()">
+        <span>Logout</span>
+    </button>
+</div>

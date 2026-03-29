@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Verified | Camagru</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="/pages/index.html" onclick="if(window.location.pathname === '/pages/index.html' || window.location.pathname.endsWith('/index.html')) { event.preventDefault(); return false; }" style="color: inherit; text-decoration: none;">Camagru</a></h1>
+    </header>
+
+    <main style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 200px);">
+        <div style="background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); padding: 40px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 107, 157, 0.2); max-width: 500px; text-align: center;">
+            <h2 style="color: #10B981; margin-bottom: 20px; font-size: 2em;">✅ Account Verified!</h2>
+            <p style="color: #cbd5e1; font-size: 16px; line-height: 1.6;">
+                You can now close this page and return to login.
+            </p>
+    </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Camagru</p>
+    </footer>
+
+    
+    <div id="popupBackdrop" class="popup-backdrop" onclick="closePopup()"></div>
+
+    
+    <div id="rightPopup" class="popup-right"></div>
+
+    
+    <script src="/assets/js/config.js"></script>
+    
+    
+    <script src="/assets/js/common/template-loader.js"></script>
+    
+    
+    <script src="/assets/js/common/user/state.js"></script>
+    <script src="/assets/js/common/user/api.js"></script>
+    <script src="/assets/js/common/utils/helpers.js"></script>
+    <script src="/assets/js/common/validation/validators.js"></script>
+    <script src="/assets/js/common/ui/popup.js"></script>
+    
+    
+    <script src="/assets/js/common/auth/token.js"></script>
+    <script src="/assets/js/auth/auth.js"></script>
+    <script src="/assets/js/common/auth/forms.js"></script>
+    
+    
+    <script src="/assets/js/common/user/settings.js"></script>
+    <script src="/assets/js/common/user/profile.js"></script>
+    <script src="/assets/js/common/user/actions.js"></script>
+    
+    
+    <script src="/assets/js/common/messages.js"></script>
+</body>
+</html>

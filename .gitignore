@@ -1,0 +1,28 @@
+# Uploads directory - user-generated content
+backend/public/uploads/*
+!backend/public/uploads/.gitkeep
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Vendor (if not using Composer in production)
+# vendor/
+
+# Node modules (if any)
+node_modules/
+

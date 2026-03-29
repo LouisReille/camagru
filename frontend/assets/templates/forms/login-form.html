@@ -1,0 +1,29 @@
+<button class="popup-close-btn" onclick="closePopup()" aria-label="Close">×</button>
+
+<div class="popup-header-main">
+    <h2>Login</h2>
+</div>
+
+<div class="popup-section">
+    <form id="loginForm" class="auth-form">
+        <div class="form-group-compact">
+            <label>Username or Email</label>
+            <input type="text" id="username" class="preference-input" required placeholder="Enter username or email">
+        </div>
+        <div class="form-group-compact">
+            <label>Password</label>
+            <input type="password" id="password" class="preference-input" required placeholder="Enter password">
+        </div>
+        <button type="submit" class="action-button primary">Login</button>
+    </form>
+</div>
+
+<div class="popup-section">
+    <p style="text-align: center; margin: 0 0 10px 0; color: #666; font-size: 0.9em;">
+        Don't have an account? <span class="link" onclick="showAuthForm('register')" style="color: #667eea; cursor: pointer; text-decoration: underline;">Register</span>
+    </p>
+    <p style="text-align: center; margin: 0; color: #666; font-size: 0.9em;">
+        <span class="link" id="forgotPasswordLink" style="color: #667eea; cursor: pointer; text-decoration: underline;">Forgot password?</span>
+    </p>
+</div>
+

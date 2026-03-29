@@ -1,0 +1,46 @@
+<button class="popup-close-btn" onclick="closePopup()" aria-label="Close">×</button>
+
+<div class="popup-header-main">
+    <h2>Create an Account</h2>
+</div>
+
+<div class="popup-section">
+    <form id="registerForm" class="auth-form">
+        <div class="form-group-compact">
+            <label>Username</label>
+            <input type="text" id="regUsername" class="preference-input" placeholder="Enter your username" required>
+            <div id="usernameMessage" class="field-message"></div>
+        </div>
+        
+        <div class="form-group-compact">
+            <label>Email</label>
+            <input type="email" id="regEmail" class="preference-input" placeholder="Enter your email" required>
+            <div id="emailMessage" class="field-message"></div>
+        </div>
+        
+        <div class="form-group-compact">
+            <label>Password</label>
+            <input type="password" id="regPassword" class="preference-input" placeholder="Password" required>
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 0.85em; color: #666; user-select: none; margin-top: 5px;">
+                <input type="checkbox" id="showPassword" style="margin-right: 5px; cursor: pointer;" onchange="togglePasswordVisibility('regPassword', 'regPasswordConfirm')">
+                Show password
+            </label>
+            <div id="passwordMessage" class="field-message"></div>
+        </div>
+        
+        <div class="form-group-compact">
+            <label>Confirm Password</label>
+            <input type="password" id="regPasswordConfirm" class="preference-input" placeholder="Confirm password" required>
+            <div id="passwordConfirmMessage" class="field-message"></div>
+        </div>
+        
+        <button type="submit" id="registerSubmitBtn" class="action-button primary" disabled>Register</button>
+    </form>
+</div>
+
+<div class="popup-section">
+    <p style="text-align: center; margin: 0; color: #666; font-size: 0.9em;">
+        Already have an account? <span class="link" onclick="showAuthForm('login')" style="color: #667eea; cursor: pointer; text-decoration: underline;">Log in</span>
+    </p>
+</div>
+

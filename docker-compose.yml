@@ -1,0 +1,55 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: camagru_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: camagru_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - BACKEND_URL=${BACKEND_URL:-http://localhost:8080}
+    volumes:
+      - ./backend/public/uploads:/var/www/html/uploads
+      - ./backend/public/stickers:/var/www/html/stickers
+      - ./backend/src:/var/www/html/src
+      - ./backend/config:/var/www/html/config
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: camagru_frontend
+    restart: unless-stopped
+    volumes:
+      - ./frontend/public:/usr/share/nginx/html
+      - ./frontend/assets:/usr/share/nginx/html/assets
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:

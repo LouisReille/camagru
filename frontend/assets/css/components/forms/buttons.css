@@ -1,0 +1,85 @@
+
+
+.popup-right button[type="submit"] {
+  padding: 12px;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E9B 100%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+}
+
+.popup-right button[type="submit"]:hover {
+  background: linear-gradient(135deg, #FF8E9B 0%, #FF6B9D 100%);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+  transform: translateY(-2px);
+}
+
+.popup-right button.secondary {
+  background: linear-gradient(135deg, #00D4FF 0%, #00B8D4 100%);
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
+}
+
+.popup-right button.secondary:hover {
+  background: linear-gradient(135deg, #00B8D4 0%, #0097C7 100%);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+
+.action-button {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95em;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.action-button.primary {
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E9B 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+}
+
+.action-button.primary:hover {
+  background: linear-gradient(135deg, #FF8E9B 0%, #FF6B9D 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+}
+
+.action-button.primary:active {
+  transform: translateY(0);
+}
+
+.action-button.danger {
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF4757 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+}
+
+.action-button.danger:hover {
+  background: linear-gradient(135deg, #FF4757 0%, #FF6B9D 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.5);
+}
+
+.action-button.danger:active {
+  transform: translateY(0);
+}
+
+.button-icon {
+  font-size: 1.1em;
+}
+
