@@ -42,6 +42,9 @@ function setupUploadPreviewForEdit() {
 }
 
 function setupStickerSectionForEdit(image) {
+    if (typeof setWebcamStickerFiltersUnlocked === "function") {
+        setWebcamStickerFiltersUnlocked(true);
+    }
     const stickerSection = document.getElementById("stickerSection");
     if (stickerSection) {
         stickerSection.style.display = "block";
@@ -71,7 +74,7 @@ function setupMergeButtonsForEdit() {
     }
     const mergeBtn = document.getElementById("mergeBtn");
     if (mergeBtn) {
-        mergeBtn.textContent = "💾 Save";
+        mergeBtn.textContent = "Save";
     }
 }
 

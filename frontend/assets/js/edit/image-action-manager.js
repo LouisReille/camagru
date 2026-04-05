@@ -120,13 +120,13 @@ class ImageActionManager {
                 await new Promise(resolve => setTimeout(resolve, 100));
                 if (window.capturedImageBlob) break;
             }
-            if (!window.capturedImageBlob) {
+                if (!window.capturedImageBlob) {
                 mergeBtn.disabled = false;
-                mergeBtn.textContent = "✨ Post Image";
+                mergeBtn.textContent = "Post Image";
                 if (typeof showInlineMessage === "function") {
                     showInlineMessage(mergeBtn, "Image is still processing. Please wait a moment and try again.", "error");
                 }
-                return;
+                return null;
             }
         }
         const blob = window.capturedImageBlob;
@@ -134,13 +134,13 @@ class ImageActionManager {
             if (typeof showInlineMessage === "function") {
                 showInlineMessage(mergeBtn, "Invalid image data. Please try uploading again.", "error");
             }
-            return;
+            return null;
         }
         if (blob.size === 0) {
             if (typeof showInlineMessage === "function") {
                 showInlineMessage(mergeBtn, "Invalid image. Please try again.", "error");
             }
-            return;
+            return null;
         }
         mergeBtn.disabled = true;
         mergeBtn.textContent = "Processing...";
@@ -157,11 +157,14 @@ class ImageActionManager {
             const stickers = window.activeStickers || [];
             const captionInputEl = document.getElementById("imageCaption") || document.getElementById("previewImageCaption");
             const captionValue = captionInputEl ? captionInputEl.value.trim() : "";
+            let savedImageId = null;
             if (!stickers || stickers.length === 0) {
                 if (isEditing) {
                     await saveImageWithoutStickers(editState.getImageFilename() || editState.imageFilename, captionValue || null, true);
+                    savedImageId = editState.getImageId();
                 } else {
-                    await saveImageWithoutStickers(uploadData.filename, captionValue || null, false);
+                    const saveData = await saveImageWithoutStickers(uploadData.filename, captionValue || null, false);
+                    savedImageId = saveData.image_id != null ? Number(saveData.image_id) : null;
                 }
                 if (!skipUIReset) {
                     if (typeof showInlineMessage === "function") {
@@ -193,7 +196,7 @@ class ImageActionManager {
                 if (typeof updateMergeButton === "function") {
                     updateMergeButton();
                 }
-                return;
+                return savedImageId;
             }
             const previewImg = typeof getCurrentPreviewImage === "function" ? getCurrentPreviewImage() : null;
             const container = typeof getCurrentStickerContainer === "function" ? getCurrentStickerContainer() : null;
@@ -205,7 +208,7 @@ class ImageActionManager {
                 if (typeof updateMergeButton === "function") {
                     updateMergeButton();
                 }
-                return;
+                return null;
             }
             const stickersData = await StickerPositionCalculator.calculatePositions(previewImg, container, stickers);
             if (stickersData.length === 0) {
@@ -216,14 +219,15 @@ class ImageActionManager {
                 if (typeof updateMergeButton === "function") {
                     updateMergeButton();
                 }
-                return;
+                return null;
             }
             const naturalDims = StickerPositionCalculator.getNaturalDimensions(previewImg);
             const previewWidth = naturalDims.width;
             const previewHeight = naturalDims.height;
             const captionInputEl2 = document.getElementById("imageCaption") || document.getElementById("previewImageCaption");
             const captionValue2 = captionInputEl2 ? captionInputEl2.value.trim() : "";
-            await mergeImageWithStickers(uploadData.filename, stickersData, previewWidth, previewHeight, captionValue2, isEditing);
+            const mergeData = await mergeImageWithStickers(uploadData.filename, stickersData, previewWidth, previewHeight, captionValue2, isEditing);
+            const mergedImageId = mergeData.image_id != null ? Number(mergeData.image_id) : (isEditing ? editState.getImageId() : null);
             if (!skipUIReset) {
                 if (typeof showInlineMessage === "function") {
                     showInlineMessage(mergeBtn, isEditing ? "Image updated!" : "Image saved!", "success", 2e3);
@@ -244,6 +248,7 @@ class ImageActionManager {
             if (typeof updateMergeButton === "function") {
                 updateMergeButton();
             }
+            return mergedImageId;
         } catch (err) {
             if (typeof showInlineMessage === "function") {
                 showInlineMessage(mergeBtn, err.message || "Failed to create image", "error");
@@ -254,6 +259,7 @@ class ImageActionManager {
             if (typeof updateMergeButton === "function") {
                 updateMergeButton();
             }
+            return null;
         }
     }
     async saveAndPost() {
@@ -271,8 +277,8 @@ class ImageActionManager {
         }
         const isEditing = editState.isEditing();
         const imageIdToPost = editState.getImageId();
-        await this.mergeAndUpload(true);
-        let targetImageId = imageIdToPost;
+        const savedIdFromMerge = await this.mergeAndUpload(true);
+        let targetImageId = imageIdToPost || savedIdFromMerge;
         if (!targetImageId) {
             try {
                 const fetchFn = typeof authFetch === "function" ? authFetch : fetch;
@@ -352,7 +358,7 @@ class ImageActionManager {
                 }, 300);
             } else {
                 buttonElement.disabled = false;
-                buttonElement.textContent = "🗑️ Delete";
+                buttonElement.textContent = "Delete";
                 const sidebar = document.querySelector(".edit-sidebar");
                 if (typeof showInlineMessage === "function" && sidebar) {
                     showInlineMessage(sidebar, data.error || "Failed to delete image", "error");
@@ -362,7 +368,7 @@ class ImageActionManager {
             }
         } catch (err) {
             buttonElement.disabled = false;
-            buttonElement.textContent = "🗑️ Delete";
+            buttonElement.textContent = "Delete";
             const sidebar = document.querySelector(".edit-sidebar");
             if (typeof showInlineMessage === "function" && sidebar) {
                 showInlineMessage(sidebar, "Failed to delete image: " + err.message, "error");
@@ -396,14 +402,14 @@ class ImageActionManager {
                 }
             } else {
                 buttonElement.disabled = false;
-                buttonElement.textContent = "📤 Post";
+                buttonElement.textContent = "Post";
                 if (typeof showInlineMessage === "function") {
                     showInlineMessage(buttonElement, data.error || "Failed to post image", "error");
                 }
             }
         } catch (err) {
             buttonElement.disabled = false;
-            buttonElement.textContent = "📤 Post";
+            buttonElement.textContent = "Post";
             if (typeof showInlineMessage === "function") {
                 showInlineMessage(buttonElement, "Failed to post image: " + err.message, "error");
             }

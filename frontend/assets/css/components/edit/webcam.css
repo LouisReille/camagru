@@ -12,6 +12,17 @@
   min-height: 0;
 }
 
+.webcam-live-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: stretch;
+}
+
+.webcam-live-block.webcam-live-block--hidden {
+  display: none !important;
+}
+
 .webcam-video-wrapper {
   position: relative;
   width: 100%;

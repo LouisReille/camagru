@@ -88,13 +88,14 @@ try {
     $pdo = getDatabaseConnection();
     $stmt = $pdo->prepare("INSERT INTO images (filename, user_id, is_posted, caption) VALUES (?, ?, FALSE, ?)");
     $stmt->execute([basename($output), $userId, $caption]);
+    $imageId = (int)$pdo->lastInsertId();
 
     if (file_exists($backgroundPath) && basename($backgroundPath) !== basename($output)) {
         @unlink($backgroundPath);
     }
 
     ob_end_clean();
-    echo json_encode(['success' => true, 'filename' => basename($output)]);
+    echo json_encode(['success' => true, 'filename' => basename($output), 'image_id' => $imageId]);
     exit;
 } catch (PDOException $e) {
     ob_end_clean();

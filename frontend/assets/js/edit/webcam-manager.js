@@ -28,6 +28,10 @@ class WebcamManager {
                     facingMode: "user"
                 }
             });
+            const liveBlock = document.getElementById("webcamLiveBlock");
+            if (liveBlock) {
+                liveBlock.classList.remove("webcam-live-block--hidden");
+            }
             video.srcObject = this.stream;
             const videoWrapper = document.querySelector(".webcam-video-wrapper");
             if (videoWrapper) {
@@ -69,7 +73,7 @@ class WebcamManager {
             let permissionGuide = "";
             if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
                 errorMessage = "Camera permission denied.";
-                permissionGuide = `\n                    <div style="margin-top: 15px; padding: 15px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; text-align: left;">\n                        <strong style="display: block; margin-bottom: 10px;">📱 How to enable camera access:</strong>\n                        <ol style="margin: 0; padding-left: 20px; font-size: 0.9em; line-height: 1.8;">\n                            <li>Look for the camera permission prompt in your browser</li>\n                            <li>Tap <strong>"Allow"</strong> when asked for camera access</li>\n                            <li>If you already denied it, check your browser settings:\n                                <ul style="margin-top: 5px; padding-left: 20px;">\n                                    <li><strong>Chrome/Edge:</strong> Tap the lock icon (🔒) in the address bar → Camera → Allow</li>\n                                    <li><strong>Safari:</strong> Settings → Safari → Camera → Allow for this site</li>\n                                </ul>\n                            </li>\n                            <li>Refresh the page and try again</li>\n                        </ol>\n                        <button onclick="startWebcam()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">\n                            🔄 Try Again\n                        </button>\n                    </div>\n                `;
+                permissionGuide = `\n                    <div style="margin-top: 15px; padding: 15px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; text-align: left;">\n                        <strong style="display: block; margin-bottom: 10px;">How to enable camera access:</strong>\n                        <ol style="margin: 0; padding-left: 20px; font-size: 0.9em; line-height: 1.8;">\n                            <li>Look for the camera permission prompt in your browser</li>\n                            <li>Choose <strong>Allow</strong> when asked for camera access</li>\n                            <li>If you already denied it, check your browser settings:\n                                <ul style="margin-top: 5px; padding-left: 20px;">\n                                    <li><strong>Chrome/Edge:</strong> Use the site settings icon in the address bar, then allow Camera</li>\n                                    <li><strong>Safari:</strong> Settings → Safari → Camera → Allow for this site</li>\n                                </ul>\n                            </li>\n                            <li>Refresh the page and try again</li>\n                        </ol>\n                        <button onclick="startWebcam()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">\n                            Try again\n                        </button>\n                    </div>\n                `;
             } else if (err.name === "NotFoundError" || err.name === "DevicesNotFoundError") {
                 errorMessage = "No camera found. Please use upload instead.";
             } else {
@@ -90,7 +94,10 @@ class WebcamManager {
             this.stream = null;
         }
     }
-    stop() {
+    /**
+     * Stops camera tracks (LED off) after a successful capture while keeping the still preview visible.
+     */
+    stopStreamKeepPreview() {
         if (this.stream) {
             this.stream.getTracks().forEach(track => track.stop());
             this.stream = null;
@@ -104,6 +111,9 @@ class WebcamManager {
         if (videoWrapper) {
             videoWrapper.style.display = "none";
         }
+    }
+    stop() {
+        this.stopStreamKeepPreview();
         const startBtn = document.getElementById("startWebcamBtn");
         const stopBtn = document.getElementById("stopWebcamBtn");
         const captureBtn = document.getElementById("captureBtn");
@@ -112,6 +122,10 @@ class WebcamManager {
         if (stopBtn) stopBtn.style.display = "none";
         if (captureBtn) captureBtn.style.display = "none";
         if (capturePreview) capturePreview.style.display = "none";
+        const liveBlock = document.getElementById("webcamLiveBlock");
+        if (liveBlock) {
+            liveBlock.classList.remove("webcam-live-block--hidden");
+        }
     }
     capture() {
         const video = document.getElementById("webcamVideo");

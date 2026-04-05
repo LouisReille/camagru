@@ -37,8 +37,8 @@
             
             <div class="edit-main-section" id="createSection" style="display: none;">
                 
-                <button id="backToImagesBtn" class="btn-secondary" onclick="showImagesView()" style="margin-bottom: 15px; display: none;">
-                    ← Back to Your Images
+                    <button id="backToImagesBtn" class="btn-secondary" onclick="showImagesView()" style="margin-bottom: 15px; display: none;">
+                    Back to Your Images
                 </button>
                 
                 
@@ -53,11 +53,18 @@
                 
                 <div id="webcamSection" class="source-section" style="display: none;">
                     <div class="webcam-container">
-                        <div class="webcam-video-wrapper">
-                            <video id="webcamVideo" autoplay playsinline style="display: none;"></video>
-                            <div id="webcamStickerContainer" class="sticker-container"></div>
+                        <div id="webcamLiveBlock" class="webcam-live-block">
+                            <div class="webcam-video-wrapper">
+                                <video id="webcamVideo" autoplay playsinline style="display: none;"></video>
+                                <div id="webcamStickerContainer" class="sticker-container"></div>
+                            </div>
+                            <canvas id="webcamCanvas" style="display: none;"></canvas>
+                            <div id="webcamError" class="error-message" style="display: none;"></div>
+                            <div class="webcam-controls">
+                                <button id="stopWebcamBtn" class="btn-secondary" onclick="stopWebcam()" style="display: none;">Stop</button>
+                                <button id="captureBtn" class="btn-primary" onclick="capturePhoto()" style="display: none;">Capture</button>
+                            </div>
                         </div>
-                        <canvas id="webcamCanvas" style="display: none;"></canvas>
                         
                         <div id="capturePreview" class="preview" style="display: none;">
                             <div class="preview-wrapper">
@@ -68,12 +75,6 @@
                                 <button class="btn-secondary" onclick="retakePhoto()">Retake</button>
                                 <button class="btn-primary" onclick="proceedToSticker()">Use This Photo</button>
                             </div>
-                        </div>
-                        
-                        <div id="webcamError" class="error-message" style="display: none;"></div>
-                        <div class="webcam-controls">
-                            <button id="stopWebcamBtn" class="btn-secondary" onclick="stopWebcam()" style="display: none;">Stop</button>
-                            <button id="captureBtn" class="btn-primary" onclick="capturePhoto()" style="display: none;">Capture</button>
                         </div>
                     </div>
                 </div>
@@ -110,7 +111,7 @@
 
                 
                 <div id="imagePreviewContainer" style="display: none;">
-                    <button id="previewBackBtn" class="btn-secondary" onclick="backToImagesList()" style="margin-bottom: 15px; display: none;">← Back</button>
+                    <button id="previewBackBtn" class="btn-secondary" onclick="backToImagesList()" style="margin-bottom: 15px; display: none;">Back</button>
                     <h2>Image Preview</h2>
                     <div class="preview-wrapper">
                         <img id="previewImage" src="" alt="Preview">
@@ -141,19 +142,20 @@
                     <div id="appliedStickersList" class="applied-stickers-list"></div>
                 </div>
                 
+                <p id="webcamFramesOnlyHint" class="sticker-phase-hint" style="display: none;">Choose a frame before capturing. Stickers and filters are available after the photo is taken.</p>
                 <div class="sticker-tabs">
-                    <button class="sticker-tab active" onclick="switchStickerTab('stickers')">Stickers</button>
-                    <button class="sticker-tab" onclick="switchStickerTab('filters')">Filters</button>
-                    <button class="sticker-tab" onclick="switchStickerTab('frames')">Frames</button>
+                    <button type="button" class="sticker-tab active" data-tab="frames" onclick="switchStickerTab('frames')">Frames</button>
+                    <button type="button" class="sticker-tab" data-tab="stickers" onclick="switchStickerTab('stickers')">Stickers</button>
+                    <button type="button" class="sticker-tab" data-tab="filters" onclick="switchStickerTab('filters')">Filters</button>
                 </div>
-                <div id="stickersTab" class="sticker-tab-content active">
+                <div id="framesTab" class="sticker-tab-content active">
+                    <div class="sticker-grid" id="frameGrid"></div>
+                </div>
+                <div id="stickersTab" class="sticker-tab-content">
                     <div class="sticker-grid" id="stickerGrid"></div>
                 </div>
                 <div id="filtersTab" class="sticker-tab-content">
                     <div class="sticker-grid" id="filterGrid"></div>
-                </div>
-                <div id="framesTab" class="sticker-tab-content">
-                    <div class="sticker-grid" id="frameGrid"></div>
                 </div>
             </div>
 

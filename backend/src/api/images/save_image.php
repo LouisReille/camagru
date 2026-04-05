@@ -45,7 +45,8 @@ try {
     $pdo = getDatabaseConnection();
     $stmt = $pdo->prepare("INSERT INTO images (filename, user_id, is_posted, caption) VALUES (?, ?, FALSE, ?)");
     $stmt->execute([basename($filename), $userId, $caption]);
-    echo json_encode(['success' => true, 'filename' => basename($filename)]);
+    $imageId = (int)$pdo->lastInsertId();
+    echo json_encode(['success' => true, 'filename' => basename($filename), 'image_id' => $imageId]);
     exit;
 } catch (PDOException $e) {
     http_response_code(500);

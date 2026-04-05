@@ -30,10 +30,12 @@
 }
 
 .gallery-empty-state .empty-icon {
-  font-size: 4em;
+  width: 72px;
+  height: 72px;
   margin-bottom: 20px;
-  opacity: 0.8;
-  filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.3));
+  border: 2px dashed rgba(255, 107, 157, 0.35);
+  border-radius: 12px;
+  background: rgba(255, 107, 157, 0.06);
 }
 
 .gallery-empty-state h3 {
@@ -88,7 +90,8 @@
   }
 
   .gallery-empty-state .empty-icon {
-    font-size: 3em;
+    width: 56px;
+    height: 56px;
     margin-bottom: 15px;
   }
 
@@ -124,7 +127,8 @@
   }
 
   .gallery-empty-state .empty-icon {
-    font-size: 2.5em;
+    width: 48px;
+    height: 48px;
     margin-bottom: 10px;
   }
 

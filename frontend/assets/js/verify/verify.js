@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const fetchFn = typeof authFetch === "function" ? authFetch : fetch;
     fetchFn(`${API_CONFIG.USERS_API}verify.php?token=${token}`).then(res => res.json()).then(data => {
         if (data.success) {
-            statusEl.textContent = "✅ Account Verified!";
+            statusEl.textContent = "Account verified";
             messageEl.textContent = "Your account has been successfully verified.";
             loginLinkEl.style.display = "block";
         } else {

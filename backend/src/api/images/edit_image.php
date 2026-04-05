@@ -90,7 +90,7 @@ try {
             $stmt->execute($updateValues);
         }
 
-        echo json_encode(['success' => true, 'filename' => basename($image['filename'])]);
+        echo json_encode(['success' => true, 'filename' => basename($image['filename']), 'image_id' => (int)$imageId]);
         exit;
     }
 
@@ -113,7 +113,7 @@ try {
     }
 
     ob_end_clean();
-    echo json_encode(['success' => true, 'filename' => basename($output)]);
+    echo json_encode(['success' => true, 'filename' => basename($output), 'image_id' => (int)$imageId]);
 } catch (Exception $e) {
     ob_end_clean();
     http_response_code(500);

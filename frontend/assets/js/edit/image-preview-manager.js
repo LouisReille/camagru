@@ -45,7 +45,7 @@ function showImagePreview(image) {
     }
     if (previewDeleteBtn) {
         previewDeleteBtn.disabled = false;
-        previewDeleteBtn.textContent = "🗑️ Delete";
+        previewDeleteBtn.textContent = "Delete";
         previewDeleteBtn.style.display = "inline-block";
         const existingConfirm = previewDeleteBtn.parentNode?.querySelector(".delete-confirmation-container");
         if (existingConfirm) {
@@ -121,14 +121,14 @@ async function postPreviewImage() {
             window.location.href = "/pages/index.html";
         } else {
             btn.disabled = false;
-            btn.textContent = "📤 Post";
+            btn.textContent = "Post";
             if (typeof showInlineMessage === "function") {
                 showInlineMessage(btn, data.error || "Failed to post image", "error");
             }
         }
     } catch (err) {
         btn.disabled = false;
-        btn.textContent = "📤 Post";
+        btn.textContent = "Post";
         if (typeof showInlineMessage === "function") {
             showInlineMessage(btn, "Failed to post image: " + err.message, "error");
         }
@@ -282,7 +282,7 @@ async function performDeleteImage(imageId, btn) {
         const data = await res.json();
         if (data.success) {
             btn.disabled = false;
-            btn.textContent = "🗑️ Delete";
+            btn.textContent = "Delete";
             document.getElementById("imagePreviewContainer").style.display = "none";
             if (typeof showImagesView === "function") {
                 showImagesView();
@@ -292,14 +292,14 @@ async function performDeleteImage(imageId, btn) {
             }
         } else {
             btn.disabled = false;
-            btn.textContent = "🗑️ Delete";
+            btn.textContent = "Delete";
             if (typeof showInlineMessage === "function") {
                 showInlineMessage(btn, data.error || "Failed to delete image", "error");
             }
         }
     } catch (err) {
         btn.disabled = false;
-        btn.textContent = "🗑️ Delete";
+        btn.textContent = "Delete";
         if (typeof showInlineMessage === "function") {
             showInlineMessage(btn, "Failed to delete image: " + err.message, "error");
         }

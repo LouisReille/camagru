@@ -27,6 +27,12 @@ function switchSource(source) {
         viewManager.showBackButton();
     }
     currentSource = source;
+    if (typeof setWebcamStickerFiltersUnlocked === "function") {
+        setWebcamStickerFiltersUnlocked(source !== "webcam");
+    }
+    if (source === "webcam" && typeof clearAllStickers === "function") {
+        clearAllStickers();
+    }
     window.capturedImageBlob = null;
     window.capturedImageDataUrl = null;
     selectedSticker = null;
@@ -47,6 +53,10 @@ function switchSource(source) {
         stickerPreview.style.display = "none";
     }
     if (source === "webcam") {
+        const live = document.getElementById("webcamLiveBlock");
+        if (live) {
+            live.classList.remove("webcam-live-block--hidden");
+        }
         const videoWrapper = document.querySelector(".webcam-video-wrapper");
         const video = document.getElementById("webcamVideo");
         if (videoWrapper) {
@@ -58,6 +68,12 @@ function switchSource(source) {
     }
     if (source === "upload" && stream) {
         stopWebcam();
+    }
+    if (typeof switchStickerTab === "function") {
+        switchStickerTab("frames");
+    }
+    if (typeof refreshWebcamStickerTabLock === "function") {
+        refreshWebcamStickerTabLock();
     }
 }
 
@@ -74,13 +90,23 @@ function stopWebcam() {
 async function capturePhoto() {
     const result = await webcamManager.capture();
     if (result) {
+        webcamManager.stopStreamKeepPreview();
+        stream = null;
         window.capturedImageBlob = result.blob;
         window.capturedImageDataUrl = result.dataUrl;
         const preview = document.getElementById("capturePreview");
         const previewImg = document.getElementById("capturePreviewImg");
         if (preview && previewImg) {
+            previewImg.onload = null;
             previewImg.src = result.dataUrl;
             preview.style.display = "block";
+            if (typeof setWebcamStickerFiltersUnlocked === "function") {
+                setWebcamStickerFiltersUnlocked(true);
+            }
+            const liveBlock = document.getElementById("webcamLiveBlock");
+            if (liveBlock) {
+                liveBlock.classList.add("webcam-live-block--hidden");
+            }
             const videoWrapper = document.querySelector(".webcam-video-wrapper");
             if (videoWrapper) videoWrapper.style.display = "none";
             const video = document.getElementById("webcamVideo");
@@ -111,6 +137,13 @@ async function capturePhoto() {
 }
 
 function retakePhoto() {
+    const liveBlock = document.getElementById("webcamLiveBlock");
+    if (liveBlock) {
+        liveBlock.classList.remove("webcam-live-block--hidden");
+    }
+    if (typeof setWebcamStickerFiltersUnlocked === "function") {
+        setWebcamStickerFiltersUnlocked(false);
+    }
     window.capturedImageBlob = null;
     window.capturedImageDataUrl = null;
     selectedSticker = null;
@@ -120,7 +153,10 @@ function retakePhoto() {
     }
     document.getElementById("capturePreview").style.display = "none";
     const previewImg = document.getElementById("capturePreviewImg");
-    if (previewImg) previewImg.src = "";
+    if (previewImg) {
+        previewImg.onload = null;
+        previewImg.src = "";
+    }
     startWebcam();
     const stickerSection = document.getElementById("stickerSection");
     if (stickerSection) {
@@ -150,6 +186,10 @@ function retakePhoto() {
 function proceedToSticker() {
     if (!editState.isEditing()) {
         viewManager.hideBackButton();
+    }
+    const liveBlock = document.getElementById("webcamLiveBlock");
+    if (liveBlock) {
+        liveBlock.classList.add("webcam-live-block--hidden");
     }
     const webcamSection = document.getElementById("webcamSection");
     if (webcamSection) {
@@ -344,14 +384,14 @@ function updateCaptureButtonState() {
     const captureBtn = document.getElementById("captureBtn");
     if (!captureBtn) return;
     const stickers = window.activeStickers || [];
-    const hasSticker = stickers.length > 0;
-    captureBtn.disabled = !hasSticker;
-    if (hasSticker) {
-        captureBtn.title = "Click to capture photo";
+    const hasFrame = stickers.some(s => s.type === "frame");
+    captureBtn.disabled = !hasFrame;
+    if (hasFrame) {
+        captureBtn.title = "Capture photo";
         captureBtn.style.opacity = "1";
         captureBtn.style.cursor = "pointer";
     } else {
-        captureBtn.title = "Please select a sticker, filter, or frame first";
+        captureBtn.title = "Select a frame before capturing";
         captureBtn.style.opacity = "0.6";
         captureBtn.style.cursor = "not-allowed";
     }
@@ -363,9 +403,9 @@ function updateMergeButton() {
         mergeBtn.disabled = false;
         const stickers = window.activeStickers || [];
         if (stickers && stickers.length > 0) {
-            mergeBtn.textContent = `💾 Save Image (${stickers.length} ${stickers.length === 1 ? "sticker" : "stickers"})`;
+            mergeBtn.textContent = `Save Image (${stickers.length} ${stickers.length === 1 ? "layer" : "layers"})`;
         } else {
-            mergeBtn.textContent = "💾 Save Image";
+            mergeBtn.textContent = "Save Image";
         }
     }
 }
@@ -485,7 +525,7 @@ function resetEditForm() {
     }
     const mergeBtn = document.getElementById("mergeBtn");
     if (mergeBtn) {
-        mergeBtn.textContent = "💾 Save Image";
+        mergeBtn.textContent = "Save Image";
     }
     const previewContainer = document.getElementById("imagePreviewContainer");
     if (previewContainer) {
@@ -513,6 +553,16 @@ function resetEditForm() {
         if (uploadSection) {
             uploadSection.style.display = "block";
         }
+    }
+    const liveBlockReset = document.getElementById("webcamLiveBlock");
+    if (liveBlockReset) {
+        liveBlockReset.classList.remove("webcam-live-block--hidden");
+    }
+    if (typeof switchStickerTab === "function") {
+        switchStickerTab("frames");
+    }
+    if (typeof refreshWebcamStickerTabLock === "function") {
+        refreshWebcamStickerTabLock();
     }
 }
 

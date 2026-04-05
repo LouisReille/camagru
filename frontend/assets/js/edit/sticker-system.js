@@ -4,6 +4,44 @@ let activeStickers = [];
 
 window.activeStickers = activeStickers;
 
+window.__webcamAllowStickersAndFilters = true;
+
+function isWebcamFramesOnlyPhase() {
+    if (typeof currentSource === "undefined" || currentSource !== "webcam") {
+        return false;
+    }
+    return !window.__webcamAllowStickersAndFilters;
+}
+
+function setWebcamStickerFiltersUnlocked(unlocked) {
+    window.__webcamAllowStickersAndFilters = !!unlocked;
+    refreshWebcamStickerTabLock();
+}
+
+function refreshWebcamStickerTabLock() {
+    const lock = isWebcamFramesOnlyPhase();
+    const hint = document.getElementById("webcamFramesOnlyHint");
+    if (hint) {
+        hint.style.display = lock ? "block" : "none";
+    }
+    document.querySelectorAll(".sticker-tab[data-tab]").forEach(btn => {
+        const t = btn.dataset.tab;
+        const allow = !lock || t === "frames";
+        btn.disabled = !allow;
+        btn.classList.toggle("sticker-tab-locked", lock && t !== "frames");
+        btn.setAttribute("aria-disabled", allow ? "false" : "true");
+    });
+    if (lock) {
+        const framesTab = document.getElementById("framesTab");
+        if (framesTab && !framesTab.classList.contains("active")) {
+            switchStickerTab("frames");
+        }
+    }
+}
+
+window.setWebcamStickerFiltersUnlocked = setWebcamStickerFiltersUnlocked;
+window.refreshWebcamStickerTabLock = refreshWebcamStickerTabLock;
+
 const STICKER_CATALOGUE = {
     stickers: [ {
         id: "heart",
@@ -199,6 +237,9 @@ function getCurrentPreviewImage() {
 }
 
 function addStickerToPreview(stickerSrc, stickerType = "sticker") {
+    if (isWebcamFramesOnlyPhase() && stickerType !== "frame") {
+        return null;
+    }
     const container = getCurrentStickerContainer();
     const previewImg = getCurrentPreviewImage();
     if (!container || !previewImg) {
@@ -232,7 +273,8 @@ function addStickerToPreview(stickerSrc, stickerType = "sticker") {
             removeSticker(frame.id);
         });
     }
-    if (container) {
+    const isSingleInstanceType = stickerType === "filter" || stickerType === "frame";
+    if (isSingleInstanceType && container) {
         const existingStickers = container.querySelectorAll(".draggable-sticker");
         for (const existing of existingStickers) {
             if (existing.dataset.src === stickerSrc && existing.dataset.type === stickerType) {
@@ -248,7 +290,7 @@ function addStickerToPreview(stickerSrc, stickerType = "sticker") {
         }
     }
     const alreadyExists = activeStickers.some(s => s.src === stickerSrc && s.type === stickerType && !s.pending);
-    if (alreadyExists && container && previewImg) {
+    if (isSingleInstanceType && alreadyExists && container && previewImg) {
         const existing = activeStickers.find(s => s.src === stickerSrc && s.type === stickerType && !s.pending);
         if (existing) {
             const existingEl = container.querySelector(`#${existing.id}`);
@@ -724,30 +766,25 @@ function loadStickerCatalogue() {
         item.appendChild(img);
         frameGrid.appendChild(item);
     });
+    refreshWebcamStickerTabLock();
 }
 
 function switchStickerTab(tab) {
+    if (isWebcamFramesOnlyPhase() && tab !== "frames") {
+        tab = "frames";
+    }
     const stickersTab = document.getElementById("stickersTab");
     const filtersTab = document.getElementById("filtersTab");
     const framesTab = document.getElementById("framesTab");
-    const tabs = document.querySelectorAll(".sticker-tab");
     if (!stickersTab || !filtersTab || !framesTab) {
         return;
     }
-    tabs.forEach(t => t.classList.remove("active"));
-    stickersTab.classList.remove("active");
-    filtersTab.classList.remove("active");
-    framesTab.classList.remove("active");
-    if (tab === "stickers") {
-        stickersTab.classList.add("active");
-        if (tabs[0]) tabs[0].classList.add("active");
-    } else if (tab === "filters") {
-        filtersTab.classList.add("active");
-        if (tabs[1]) tabs[1].classList.add("active");
-    } else if (tab === "frames") {
-        framesTab.classList.add("active");
-        if (tabs[2]) tabs[2].classList.add("active");
-    }
+    document.querySelectorAll(".sticker-tab[data-tab]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tab);
+    });
+    stickersTab.classList.toggle("active", tab === "stickers");
+    filtersTab.classList.toggle("active", tab === "filters");
+    framesTab.classList.toggle("active", tab === "frames");
 }
 
 function clearAllStickers() {
@@ -808,7 +845,7 @@ function updateAppliedStickersList() {
         iconImg.alt = sticker.src;
         iconImg.onerror = () => {
             iconImg.style.display = "none";
-            icon.textContent = "📷";
+            icon.textContent = "";
         };
         icon.appendChild(iconImg);
         const info = document.createElement("div");

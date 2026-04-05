@@ -10,19 +10,19 @@
 {{#if showCreateImageCard}}
 <div class="popup-action-card">
     <a href="/pages/edit.html" class="action-card-link">
-        <div class="action-card-icon">📷</div>
+        <div class="action-card-icon" aria-hidden="true"></div>
         <div class="action-card-content">
             <div class="action-card-title">Edit Images</div>
             <div class="action-card-subtitle">Create, edit, or manage your images</div>
         </div>
-        <div class="action-card-arrow">→</div>
+        <div class="action-card-arrow" aria-hidden="true"></div>
     </a>
 </div>
 {{/if}}
 
 <div class="popup-section">
     <div class="section-header" onclick="showAccountPreferences()">
-        <h3>⚙️ Preferences</h3>
+        <h3>Preferences</h3>
         <span class="section-toggle" id="preferencesToggle">▼</span>
     </div>
     <div id="accountPreferences" class="account-preferences-content" style="display: none;">
@@ -76,7 +76,6 @@
         
         <div class="preferences-section">
             <button class="action-button danger" id="deleteAccountBtn">
-                <span class="button-icon">🗑️</span>
                 <span>Delete Account</span>
             </button>
         </div>
