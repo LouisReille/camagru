@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../../config/uploads_path.php';
 require_once __DIR__ . '/../../utils/config/cors.php';
 
 if (!$GLOBALS['cors_headers_set']) {
@@ -15,7 +16,7 @@ if (!$filename) {
 }
 
 $filename = basename($filename);
-$uploadDir = '/var/www/html/uploads/';
+$uploadDir = getUploadsDirectory();
 $filePath = $uploadDir . $filename;
 
 if (!file_exists($filePath)) {

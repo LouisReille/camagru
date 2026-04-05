@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../utils/config/cors.php';
 require_once __DIR__ . '/../../utils/auth/auth_helper.php';
 require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../../config/uploads_path.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -37,7 +38,7 @@ try {
         exit;
     }
 
-    $uploadDir = '/var/www/html/uploads/';
+    $uploadDir = getUploadsDirectory();
     $originalPath = $uploadDir . basename($image['filename']);
 
     if (!file_exists($originalPath)) {

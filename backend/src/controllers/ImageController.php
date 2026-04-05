@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/uploads_path.php';
 require_once __DIR__ . '/../models/Image.php';
 require_once __DIR__ . '/../models/Like.php';
 require_once __DIR__ . '/../models/Comment.php';
@@ -63,7 +64,7 @@ class ImageController {
         $deleted = $this->imageModel->delete($imageId, $userId);
 
         if ($deleted && $filename) {
-            $filePath = '/var/www/html/uploads/' . basename($filename);
+            $filePath = getUploadsDirectory() . basename($filename);
 
             if (file_exists($filePath)) {
                 unlink($filePath);

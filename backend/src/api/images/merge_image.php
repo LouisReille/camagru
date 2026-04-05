@@ -23,6 +23,7 @@ require_once __DIR__ . '/../../utils/config/cors.php';
 require_once __DIR__ . '/../../utils/config/session.php';
 require_once __DIR__ . '/../../utils/auth/auth_helper.php';
 require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../../config/uploads_path.php';
 require_once __DIR__ . '/../../utils/image_processing.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -53,7 +54,7 @@ if ($caption !== null) {
 
 }
 
-$uploadDir = '/var/www/html/uploads/';
+$uploadDir = getUploadsDirectory();
 $backgroundPath = $uploadDir . basename($background);
 $output = $uploadDir . uniqid() . '.png';
 

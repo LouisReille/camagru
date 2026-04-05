@@ -15,11 +15,8 @@ header('Content-Type: application/json');
 
 try {
     require_once __DIR__ . '/../../../config/database.php';
-    $uploadDir = '/var/www/html/uploads/';
-
-    if (!is_dir($uploadDir)) {
-        $uploadDir = __DIR__ . '/../../../public/uploads/';
-    }
+    require_once __DIR__ . '/../../../config/uploads_path.php';
+    $uploadDir = getUploadsDirectory();
 
     $pdo = getDatabaseConnection();
     $stmt = $pdo->query("SELECT filename FROM images");

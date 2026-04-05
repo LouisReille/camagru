@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../../config/uploads_path.php';
 $userId = requireAuth();
 $pdo = null;
 
@@ -78,7 +79,7 @@ try {
 
     $stmt = $pdo->prepare("DELETE FROM images WHERE user_id = ?");
     $stmt->execute([$userId]);
-    $uploadDir = '/var/www/html/uploads/';
+    $uploadDir = getUploadsDirectory();
 
     foreach ($imageFilenames as $filename) {
         $filePath = $uploadDir . basename($filename);

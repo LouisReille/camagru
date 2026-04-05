@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../../utils/config/cors.php';
 require_once __DIR__ . '/../../utils/config/session.php';
 require_once __DIR__ . '/../../utils/auth/auth_helper.php';
-require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../../config/uploads_path.php';
 require_once __DIR__ . '/../../utils/image_processing.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -95,7 +95,6 @@ if ($_FILES['image']['size'] > $maxSize) {
 }
 
 try {
-    $pdo = getDatabaseConnection();
     $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
 
     if (empty($ext)) {
@@ -109,7 +108,7 @@ try {
     }
 
     $filename = uniqid() . '_' . time() . '.' . $ext;
-    $uploadDir = '/var/www/html/uploads/';
+    $uploadDir = getUploadsDirectory();
 
     if (!is_dir($uploadDir)) {
         if (!@mkdir($uploadDir, 0777, true)) {
@@ -153,7 +152,7 @@ try {
         echo json_encode(['error' => 'Upload failed.']);
     }
 
-} catch (Exception $e) {
+} catch (Throwable $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Server error: ' . $e->getMessage()]);
 }

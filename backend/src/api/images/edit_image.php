@@ -7,6 +7,7 @@ ini_set('log_errors', 0);
 require_once __DIR__ . '/../../utils/config/cors.php';
 require_once __DIR__ . '/../../utils/auth/auth_helper.php';
 require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../../config/uploads_path.php';
 require_once __DIR__ . '/../../utils/image_processing.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -61,7 +62,7 @@ try {
         exit;
     }
 
-    $uploadDir = '/var/www/html/uploads/';
+    $uploadDir = getUploadsDirectory();
     $baseFilename = basename($image['filename']);
     $imagePath = $uploadDir . $baseFilename;
 
