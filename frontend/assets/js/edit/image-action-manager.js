@@ -109,6 +109,53 @@ async function saveImageWithoutStickers(filename, caption, isEditing) {
     return saveData;
 }
 
+function normalizeImageId(value) {
+    if (value == null || value === "") {
+        return null;
+    }
+    const n = parseInt(String(value), 10);
+    return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+function filenameBasename(name) {
+    if (!name || typeof name !== "string") {
+        return null;
+    }
+    const parts = name.split(/[/\\]/);
+    return parts[parts.length - 1] || name;
+}
+
+async function findUserImageIdByFilename(filename) {
+    const base = filenameBasename(filename);
+    if (!base) {
+        return null;
+    }
+    try {
+        const fetchFn = typeof authFetch === "function" ? authFetch : fetch;
+        const res = await fetchFn(API_CONFIG.IMAGES_API + "user_images.php?t=" + Date.now(), {
+            credentials: "include",
+            cache: "no-store"
+        });
+        const text = await res.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            return null;
+        }
+        if (!data.success || !Array.isArray(data.images)) {
+            return null;
+        }
+        const found = data.images.find(img => {
+            const imgBase = filenameBasename(img.filename);
+            return imgBase === base || img.filename === base || img.filename === filename;
+        });
+        return found ? normalizeImageId(found.id) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
 class ImageActionManager {
     async mergeAndUpload(skipUIReset = false) {
         const mergeBtn = document.getElementById("mergeBtn");
@@ -120,7 +167,7 @@ class ImageActionManager {
                 await new Promise(resolve => setTimeout(resolve, 100));
                 if (window.capturedImageBlob) break;
             }
-                if (!window.capturedImageBlob) {
+            if (!window.capturedImageBlob) {
                 mergeBtn.disabled = false;
                 mergeBtn.textContent = "Post Image";
                 if (typeof showInlineMessage === "function") {
@@ -157,14 +204,17 @@ class ImageActionManager {
             const stickers = window.activeStickers || [];
             const captionInputEl = document.getElementById("imageCaption") || document.getElementById("previewImageCaption");
             const captionValue = captionInputEl ? captionInputEl.value.trim() : "";
-            let savedImageId = null;
             if (!stickers || stickers.length === 0) {
+                let outImageId = null;
+                let outFilename = null;
                 if (isEditing) {
                     await saveImageWithoutStickers(editState.getImageFilename() || editState.imageFilename, captionValue || null, true);
-                    savedImageId = editState.getImageId();
+                    outImageId = normalizeImageId(editState.getImageId());
+                    outFilename = filenameBasename(editState.getImageFilename() || editState.imageFilename);
                 } else {
                     const saveData = await saveImageWithoutStickers(uploadData.filename, captionValue || null, false);
-                    savedImageId = saveData.image_id != null ? Number(saveData.image_id) : null;
+                    outImageId = normalizeImageId(saveData.image_id);
+                    outFilename = filenameBasename(saveData.filename || uploadData.filename);
                 }
                 if (!skipUIReset) {
                     if (typeof showInlineMessage === "function") {
@@ -196,7 +246,10 @@ class ImageActionManager {
                 if (typeof updateMergeButton === "function") {
                     updateMergeButton();
                 }
-                return savedImageId;
+                return {
+                    imageId: outImageId,
+                    filename: outFilename
+                };
             }
             const previewImg = typeof getCurrentPreviewImage === "function" ? getCurrentPreviewImage() : null;
             const container = typeof getCurrentStickerContainer === "function" ? getCurrentStickerContainer() : null;
@@ -227,7 +280,8 @@ class ImageActionManager {
             const captionInputEl2 = document.getElementById("imageCaption") || document.getElementById("previewImageCaption");
             const captionValue2 = captionInputEl2 ? captionInputEl2.value.trim() : "";
             const mergeData = await mergeImageWithStickers(uploadData.filename, stickersData, previewWidth, previewHeight, captionValue2, isEditing);
-            const mergedImageId = mergeData.image_id != null ? Number(mergeData.image_id) : (isEditing ? editState.getImageId() : null);
+            const mergedImageId = normalizeImageId(mergeData.image_id) ?? (isEditing ? normalizeImageId(editState.getImageId()) : null);
+            const mergedFilename = filenameBasename(mergeData.filename || uploadData.filename);
             if (!skipUIReset) {
                 if (typeof showInlineMessage === "function") {
                     showInlineMessage(mergeBtn, isEditing ? "Image updated!" : "Image saved!", "success", 2e3);
@@ -248,7 +302,10 @@ class ImageActionManager {
             if (typeof updateMergeButton === "function") {
                 updateMergeButton();
             }
-            return mergedImageId;
+            return {
+                imageId: mergedImageId,
+                filename: mergedFilename
+            };
         } catch (err) {
             if (typeof showInlineMessage === "function") {
                 showInlineMessage(mergeBtn, err.message || "Failed to create image", "error");
@@ -276,18 +333,25 @@ class ImageActionManager {
             cancelBtn.disabled = true;
         }
         const isEditing = editState.isEditing();
-        const imageIdToPost = editState.getImageId();
-        const savedIdFromMerge = await this.mergeAndUpload(true);
-        let targetImageId = imageIdToPost || savedIdFromMerge;
+        const imageIdToPost = normalizeImageId(editState.getImageId());
+        const mergeResult = await this.mergeAndUpload(true);
+        let targetImageId = imageIdToPost;
+        if (!targetImageId && mergeResult && typeof mergeResult === "object") {
+            targetImageId = normalizeImageId(mergeResult.imageId);
+        }
+        if (!targetImageId && mergeResult && mergeResult.filename) {
+            targetImageId = await findUserImageIdByFilename(mergeResult.filename);
+        }
         if (!targetImageId) {
             try {
                 const fetchFn = typeof authFetch === "function" ? authFetch : fetch;
-                const res = await fetchFn(API_CONFIG.IMAGES_API + "user_images.php", {
-                    credentials: "include"
+                const res = await fetchFn(API_CONFIG.IMAGES_API + "user_images.php?t=" + Date.now(), {
+                    credentials: "include",
+                    cache: "no-store"
                 });
                 const data = await res.json();
                 if (data.success && data.images && data.images.length > 0) {
-                    targetImageId = data.images[0].id;
+                    targetImageId = normalizeImageId(data.images[0].id);
                 }
             } catch (err) {}
         }
